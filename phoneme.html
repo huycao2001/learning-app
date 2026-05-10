@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Phoneme Practice | Lis n Bliss</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #17212f;
+        --muted: #617084;
+        --line: #d9e1ea;
+        --soft: #f5f8fb;
+        --panel: #ffffff;
+        --brand: #146c63;
+        --brand-dark: #0d4f49;
+        --accent: #d97706;
+        --success: #157347;
+        --danger: #b42318;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--ink);
+        background:
+          linear-gradient(120deg, rgba(20, 108, 99, 0.08), transparent 36%),
+          linear-gradient(300deg, rgba(217, 119, 6, 0.09), transparent 32%),
+          var(--soft);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .shell {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        padding-bottom: 44px;
+      }
+
+      header {
+        padding: 24px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        background: var(--brand);
+        box-shadow: 0 10px 24px rgba(20, 108, 99, 0.22);
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .nav-link,
+      .login-link {
+        min-height: 42px;
+        padding: 10px 16px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+      }
+
+      .nav-link {
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid var(--line);
+      }
+
+      .login-link {
+        color: #fff;
+        background: var(--brand);
+      }
+
+      .login-link:hover {
+        background: var(--brand-dark);
+      }
+
+      .intro {
+        padding: 34px 0 26px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+        gap: 32px;
+        align-items: end;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(36px, 5vw, 62px);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .intro p {
+        max-width: 690px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.6;
+      }
+
+      .streak-box {
+        padding: 18px;
+        border: 1px solid rgba(24, 33, 47, 0.1);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      .streak-box strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 22px;
+      }
+
+      .meter {
+        height: 9px;
+        margin-top: 14px;
+        border-radius: 999px;
+        background: #e8eef5;
+        overflow: hidden;
+      }
+
+      .meter span {
+        display: block;
+        width: 66%;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--brand);
+      }
+
+      .level-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin: 8px 0 22px;
+      }
+
+      .level-select {
+        display: grid;
+        gap: 18px;
+      }
+
+      .level-select.hidden,
+      .workspace.hidden {
+        display: none;
+      }
+
+      .level-tab {
+        min-height: 62px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.76);
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .level-tab strong,
+      .level-tab span {
+        display: block;
+      }
+
+      .level-tab span {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .level-tab.active {
+        border-color: rgba(20, 108, 99, 0.45);
+        background: #eef8f6;
+        box-shadow: inset 0 0 0 1px rgba(20, 108, 99, 0.18);
+      }
+
+      .start-panel {
+        padding: clamp(20px, 4vw, 34px);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: 0 16px 46px rgba(24, 33, 47, 0.08);
+      }
+
+      .start-panel h2 {
+        margin-bottom: 10px;
+      }
+
+      .start-panel p {
+        max-width: 720px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .start-actions {
+        margin-top: 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .test-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .test-card {
+        min-height: 168px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: 0 16px 46px rgba(24, 33, 47, 0.08);
+      }
+
+      .test-card strong,
+      .test-card span {
+        display: block;
+      }
+
+      .test-card strong {
+        font-size: 20px;
+      }
+
+      .test-card span {
+        margin: 8px 0 18px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        min-height: 44px;
+        padding: 10px 16px;
+        border-radius: 6px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .primary-btn {
+        border: 1px solid var(--brand);
+        color: #fff;
+        background: var(--brand);
+      }
+
+      .primary-btn:hover {
+        background: var(--brand-dark);
+      }
+
+      .secondary-btn {
+        border: 1px solid var(--line);
+        color: var(--ink);
+        background: #fff;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+        gap: 20px;
+        align-items: start;
+      }
+
+      .practice-panel,
+      .side-panel,
+      .feedback-panel,
+      .record-panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: 0 16px 46px rgba(24, 33, 47, 0.08);
+      }
+
+      .practice-panel {
+        padding: clamp(20px, 4vw, 34px);
+      }
+
+      .exercise-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 26px;
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--brand-dark);
+        font-size: 13px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(25px, 3vw, 36px);
+        letter-spacing: 0;
+      }
+
+      .pill {
+        padding: 7px 10px;
+        border-radius: 999px;
+        color: #72430b;
+        background: #fff3d8;
+        font-size: 12px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .audio-zone {
+        padding: 18px;
+        border: 1px solid rgba(20, 108, 99, 0.18);
+        border-radius: 8px;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: center;
+        background: #f3fbf9;
+      }
+
+      .icon-btn {
+        width: 52px;
+        height: 52px;
+        border: 0;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        background: var(--brand);
+        cursor: pointer;
+      }
+
+      .icon-btn:hover {
+        background: var(--brand-dark);
+      }
+
+      .wave {
+        height: 42px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .wave span {
+        width: 7px;
+        border-radius: 999px;
+        background: rgba(20, 108, 99, 0.62);
+      }
+
+      .wave span:nth-child(1) {
+        height: 16px;
+      }
+
+      .wave span:nth-child(2) {
+        height: 30px;
+      }
+
+      .wave span:nth-child(3) {
+        height: 22px;
+      }
+
+      .wave span:nth-child(4) {
+        height: 38px;
+      }
+
+      .wave span:nth-child(5) {
+        height: 18px;
+      }
+
+      .wave span:nth-child(6) {
+        height: 34px;
+      }
+
+      .replay {
+        min-height: 42px;
+        padding: 10px 14px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+        color: var(--ink);
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .prompt {
+        margin: 28px 0 14px;
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .answer-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .answer {
+        min-height: 66px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--ink);
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .answer strong,
+      .answer span {
+        display: block;
+      }
+
+      .answer span {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .answer:hover {
+        border-color: rgba(20, 108, 99, 0.5);
+      }
+
+      .answer.correct {
+        border-color: rgba(21, 115, 71, 0.45);
+        background: #effaf3;
+      }
+
+      .answer.wrong {
+        border-color: rgba(180, 35, 24, 0.45);
+        background: #fff1ef;
+      }
+
+      .feedback-panel {
+        margin-top: 18px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .feedback-panel strong,
+      .feedback-panel span {
+        display: block;
+      }
+
+      .feedback-panel span {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .hint-btn {
+        min-height: 40px;
+        padding: 9px 13px;
+        border: 1px solid #f0cd8a;
+        border-radius: 6px;
+        color: #72430b;
+        background: #fff8eb;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .practice-actions {
+        margin-top: 18px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .record-panel {
+        margin-top: 18px;
+        padding: 18px;
+        display: none;
+      }
+
+      .record-panel.active {
+        display: block;
+      }
+
+      .record-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin: 14px 0;
+      }
+
+      .record-actions button {
+        min-height: 44px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .phonetic-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .phonetic-box {
+        padding: 12px;
+        border-radius: 6px;
+        background: var(--soft);
+      }
+
+      .phonetic-box span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .phonetic-box strong {
+        display: block;
+        margin-top: 5px;
+        font-size: 20px;
+      }
+
+      .side-panel {
+        padding: 20px;
+      }
+
+      .side-panel h3 {
+        margin: 0 0 14px;
+        font-size: 18px;
+      }
+
+      .lesson-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .lesson {
+        padding: 13px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .lesson.active {
+        border-color: rgba(20, 108, 99, 0.44);
+        background: #eef8f6;
+      }
+
+      .lesson strong,
+      .lesson span {
+        display: block;
+      }
+
+      .lesson span {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .mastery {
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+      }
+
+      .mastery-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      @media (max-width: 900px) {
+        .intro,
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .intro {
+          align-items: start;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .shell {
+          width: min(100% - 28px, 1180px);
+        }
+
+        header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .top-actions {
+          width: 100%;
+        }
+
+        .nav-link,
+        .login-link {
+          flex: 1;
+        }
+
+        .level-tabs,
+        .test-list,
+        .answer-grid,
+        .record-actions,
+        .phonetic-row {
+          grid-template-columns: 1fr;
+        }
+
+        .audio-zone {
+          grid-template-columns: auto minmax(0, 1fr);
+        }
+
+        .replay {
+          grid-column: 1 / -1;
+        }
+
+        .feedback-panel {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .practice-actions,
+        .start-actions {
+          align-items: stretch;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <a class="brand" href="index.html" aria-label="Lis n Bliss home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </span>
+          <span>Lis n Bliss</span>
+        </a>
+
+        <div class="top-actions">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="login-link" href="login.html">Log in</a>
+        </div>
+      </header>
+
+      <section class="intro">
+        <div>
+          <h1>Phoneme Discrimination</h1>
+          <p>
+            Listen closely, choose the sound or word you heard, and repeat until
+            the answer is accurate before moving to harder listening tasks.
+          </p>
+        </div>
+
+        <aside class="streak-box" aria-label="Mastery progress">
+          <strong>4 correct streak</strong>
+          <span>Reach 6 correct answers to unlock the next mastery check.</span>
+          <div class="meter" aria-hidden="true"><span></span></div>
+        </aside>
+      </section>
+
+      <section class="level-select" id="levelSelect">
+        <div class="start-panel">
+          <p class="eyebrow">Start practice</p>
+          <h2>Choose your difficulty level.</h2>
+          <p>
+            Each level shows its available tests. Choose a test to open its
+            separate question page.
+          </p>
+        </div>
+
+        <nav class="level-tabs" aria-label="Difficulty levels">
+          <button class="level-tab active" type="button" data-level="easy">
+            <strong>Easy</strong>
+            <span>A1-A2 single words</span>
+          </button>
+          <button class="level-tab" type="button" data-level="medium">
+            <strong>Medium</strong>
+            <span>B1-B2 sentence pairs</span>
+          </button>
+          <button class="level-tab" type="button" data-level="hard">
+            <strong>Hard</strong>
+            <span>C1 dialogue + recording</span>
+          </button>
+        </nav>
+
+        <div class="test-list" id="testList" aria-label="Available tests">
+          <article class="test-card">
+            <p class="eyebrow" id="selectedLevelLabel">Easy level</p>
+            <strong>Test 1</strong>
+            <span id="selectedTestSummary">Single-word minimal pair practice with one question.</span>
+            <a class="primary-btn" id="testLink" href="phoneme/test1/?level=easy">Open test</a>
+          </article>
+        </div>
+      </section>
+
+    </div>
+
+    <script>
+      const testsByLevel = {
+        easy: {
+          label: "Easy level",
+          summary: "Single-word minimal pair practice with one question.",
+        },
+        medium: {
+          label: "Medium level",
+          summary: "Sentence-based phoneme practice with one question.",
+        },
+        hard: {
+          label: "Hard level",
+          summary: "Dialogue and connected-speech practice with one question.",
+        },
+      };
+
+      const tabs = document.querySelectorAll(".level-tab");
+      const selectedLevelLabel = document.querySelector("#selectedLevelLabel");
+      const selectedTestSummary = document.querySelector("#selectedTestSummary");
+      const testLink = document.querySelector("#testLink");
+
+      function selectLevel(level) {
+        const test = testsByLevel[level];
+        selectedLevelLabel.textContent = test.label;
+        selectedTestSummary.textContent = test.summary;
+        testLink.href = `phoneme/test1/?level=${level}`;
+
+        tabs.forEach((item) => {
+          item.classList.toggle("active", item.dataset.level === level);
+        });
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          selectLevel(tab.dataset.level);
+        });
+      });
+
+      selectLevel("easy");
+    </script>
+  </body>
+</html>
